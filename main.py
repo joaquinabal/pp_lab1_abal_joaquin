@@ -1,6 +1,7 @@
 from funciones import (
     leer_archivo,
-    mostrar_jugadores_dreamteam
+    mostrar_jugadores_dreamteam,
+    mostrar_estadisticas
 )
 
 menu = "{0}\n{1}\n{2}\n{3} ".format(
@@ -19,7 +20,7 @@ bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y por
 
 path_JSON = "Parcial\dt.json"
 
-lista_juegos_JSON = leer_archivo(path_JSON)
+lista_dreamteam= leer_archivo(path_JSON)
 #print(lista_juegos_JSON)
 
 while True:
@@ -27,7 +28,9 @@ while True:
     
     match(int(respuesta)):
         case 1:
-            mostrar_jugadores_dreamteam(lista_juegos_JSON, False)
+            mostrar_jugadores_dreamteam(lista_dreamteam, False)
             
         case 2:
-            mostrar_jugadores_dreamteam(lista_juegos_JSON, True)
+            mostrar_jugadores_dreamteam(lista_dreamteam, True)
+            indice = input("Ingrese el indice del jugador a mostrar las estadísticas. ")
+            print(mostrar_estadisticas(lista_dreamteam, int(indice)))
