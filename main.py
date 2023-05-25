@@ -10,10 +10,11 @@ from funciones import (
     mostrar_logros_por_busqueda,
     calcular_promedio_total,
     mostrar_estadistica_por_jugador_ordenado,
-    mostrar_jugador_hof
+    mostrar_jugador_hof,
+    mostrar_jugador_mayor_stat
 )
 
-menu = "{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7} ".format(
+menu = "{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n{8} ".format(
 "----------------------------------------------------------------",
 """1- Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
 Nombre Jugador - Posición. Ejemplo:
@@ -44,6 +45,9 @@ ordenado por nombre de manera ascendente.
 """
 6- Permitir al usuario ingresar el nombre de un jugador y 
 mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
+""",
+"""
+7- Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 """,
 "Ingrese la opción deseada" 
 )
@@ -95,6 +99,11 @@ while True:
             nombre_jugador = input("Ingrese el nombre del jugador a buscar: ")
             mostrar_jugador_hof(lista_dreamteam, nombre_jugador)
                 
+        case 7:
+            estadistica_a_buscar = "rebotes_totales"
+            mostrar_jugador_mayor_stat(lista_dreamteam, estadistica_a_buscar)
+
+                    
     input("Apriete una tecla para continuar...")
                 
         

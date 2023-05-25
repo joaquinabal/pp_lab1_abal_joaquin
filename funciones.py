@@ -335,7 +335,21 @@ def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
                 )
             print(mensaje)
 
-    
+def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista = lista_original[:]
+    estadistica_str = estadistica.replace("_"," ")
+    lista_jugador_mayor_valor_stat = ["",-1]
+    for jugador in lista:
+        if jugador["estadisticas"][estadistica] > lista_jugador_mayor_valor_stat[1]:
+            lista_jugador_mayor_valor_stat = [jugador["nombre"], jugador["estadisticas"][estadistica]]
+    print("El jugador con más {0} es {1}, con {2}".format(
+        estadistica_str, lista_jugador_mayor_valor_stat[0], lista_jugador_mayor_valor_stat[1] 
+    ))
+
+
 
         
         
