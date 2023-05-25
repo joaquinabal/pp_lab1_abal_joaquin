@@ -67,6 +67,7 @@ def mostrar_estadisticas(lista_original: list[dict], indice: int):
     -----------
     Retorna:
     mensaje: tipo string -> el string que contiene las estadisticas del jugador.
+    False: en caso de que lista_original se encuentre vacía.
     '''
     
     if not lista_original:
@@ -115,11 +116,12 @@ def generar_path_jugador(lista_original: list, indice: int, path: str):
     path: tipo string -> la ruta del directorio donde se quiere generar el path.
     --------------
     Retorna:
+    False: en caso de que lista_original se encuentre vacía.
     path_final: tipo string -> la ruta incluyendo el nombre del jugador.
     '''
     if len(lista_original) == 0:
         print("Lista vacía.")
-        return -1   
+        return False   
     lista = lista_original[:]
     nombre_jugador = lista[indice]["nombre"]
     path_final = path + nombre_jugador.replace(" ","_") + ".csv"
@@ -134,11 +136,11 @@ def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
     path: tipo string -> la ruta del directorio donde se quiere generar el archivo .csv.
     ------------
     Retorna:
-    No retorna nada.
+    False: en caso de que lista_original se encuentre vacía.
     '''
     if len(lista_original) == 0:
         print("Lista vacía.")
-        return -1
+        return False
     lista = lista_original[:]
     lista_keys = ["nombre","posicion"]
     lista_valores_stats = [lista[indice]["nombre"], lista[indice]["posicion"]]
@@ -154,17 +156,124 @@ def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
     print("el archivo fue creado en {0}".format(path))
 
 def mostrar_logros_por_busqueda(lista_original: list[dict], nombre: str):
+    '''
+    Esta función muestra los logros de todos los jugadores cuyos nombres coincidan con la búsqueda pasada por param.
+    ------------
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    nombre: tipo str -> string que posee el nombre o parte del nombre del jugador a buscar.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.    
+    '''
     if len(lista_original) == 0:
         print("Lista vacía.")
         return -1
+    if nombre == " ":
+        print("Ingrese un nombre válido.")
+    else:
+        lista = lista_original[:]
+        flag_jugador = False
+        for jugador in lista:
+            busqueda = re.search(f'{nombre}', jugador["nombre"], re.I)
+            if busqueda:
+                flag_jugador = True
+                print(jugador["nombre"] + "\n")
+                for logro in jugador["logros"]:
+                    print("- " + logro + "\n")       
+        if flag_jugador == False:
+            print("No existe jugador con ese nombre.")
+
+def calcular_promedio_total(lista_original: list[dict], estadistica: str):
+    '''
+    Esta función calcula el promedio total de la estadística seleccionada.
+    ------------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    estadistica: tipo string -> la key de la estadística para calcular el promedio.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía. 
+    promedio: tipo float -> el promedio calculado.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
     lista = lista_original[:]
-    flag_jugador = False
+    contador = 0
+    acumulador = 0
+    if estadistica in lista[0]["estadisticas"].keys():
+        for jugador in lista:
+            acumulador += jugador["estadisticas"][estadistica]
+            contador += 1
+        promedio = acumulador / contador
+        return promedio
+    else:
+        print("Estadística inexistente.")
+
+def ordenar_lista_segun_key(lista_original:list, key_a_ordenar: str)->list:
+    '''
+    Esta función genera una lista ordenada según el param "key_a_ordenar" a través del método quick_sort.
+    -----------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    key_a_ordenar: tipo string -> la key cuyo valor se va a utilizar como el parámetro del ordenamiento.
+    -----------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía. 
+    lista_iz: tipo list -> la lista ordenada.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista = lista_original[:]
+    lista_de = []
+    lista_iz = []
+    if(len(lista)<=1):
+        return lista
+    else:
+        pivot = lista[0]
+        for elemento in lista[1:]:
+            if(elemento[key_a_ordenar] > pivot[key_a_ordenar]):
+                lista_de.append(elemento)
+            else:
+                lista_iz.append(elemento)
+    lista_iz = ordenar_lista_segun_key(lista_iz, key_a_ordenar)
+    lista_iz.append(pivot) 
+    lista_de = ordenar_lista_segun_key(lista_de, key_a_ordenar)
+    lista_iz.extend(lista_de) 
+    return lista_iz
+
+def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_orden: str, estadistica: str):
+    '''
+    Esta función muestra un listado ordenado según "key_orden", del nombre de los jugadores 
+    junto a la estadística pasada por param.
+    -----------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    key_orden: tipo string -> la key cuyo valor se va a utilizar como el parámetro del ordenamiento.
+    estadistica: tipo string -> la key cuyo valor se quiere mostrar en el listado.
+    -----------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía. 
+    lista_jugador_nombre: tipo list[list] -> una lista de listas que posee el nombre y el valor de la estadística.  
+    '''   
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista_aux = lista_original[:]
+    lista = ordenar_lista_segun_key(lista_aux, key_orden)
+    lista_jugador_nombre = []
     for jugador in lista:
-        busqueda = re.search(f'{nombre}', jugador["nombre"], re.I)
-        if busqueda:
-            flag_jugador = True
-            print(jugador["nombre"] + "\n")
-            for logro in jugador["logros"]:
-                print("- " + logro + "\n")       
-    if flag_jugador == False:
-        print("No existe jugador con ese nombre.")
+        lista_jugador_nombre.append([jugador["nombre"], jugador["estadisticas"][estadistica]])
+    estadistica_str = estadistica.replace("_"," ").capitalize()
+    for jugador in lista_jugador_nombre:
+        mensaje = "Jugador: {0}\n{1}: {2}\n".format(
+            jugador[0],
+            estadistica_str,
+            jugador[1])
+        print(mensaje)
+    return lista_jugador_nombre    
+    
+        
+        
+    
