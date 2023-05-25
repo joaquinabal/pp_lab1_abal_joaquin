@@ -131,6 +131,7 @@ def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
     '''
     Esta función genera un .csv de los datos y estadísticas del jugador seleccionado por índice.
     ------------
+    Parámetros
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     indice: tipo int -> el índice del jugador que se quiere seleccionar.
     path: tipo string -> la ruta del directorio donde se quiere generar el archivo .csv.
@@ -155,6 +156,25 @@ def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
         archivo.writelines([datos_para_csv])
     print("el archivo fue creado en {0}".format(path))
 
+def buscar_por_nombre(lista_original: list[dict], jugador: dict, nombre: str):
+    '''
+    Esta función busca a través de RegEx la coincidencia entre el param "nombre" y 
+    el nombre del jugador pasado por param.
+    -----------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    busqueda: tipo match.object | null -> el resultado de del re.match utilizado.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return -1
+    if nombre == " ":
+        print("Ingrese un nombre válido.")
+    else:  
+        busqueda = re.search(f'{nombre}', jugador["nombre"], re.I)
+        return busqueda
+        
+
 def mostrar_logros_por_busqueda(lista_original: list[dict], nombre: str):
     '''
     Esta función muestra los logros de todos los jugadores cuyos nombres coincidan con la búsqueda pasada por param.
@@ -167,14 +187,14 @@ def mostrar_logros_por_busqueda(lista_original: list[dict], nombre: str):
     '''
     if len(lista_original) == 0:
         print("Lista vacía.")
-        return -1
+        return False
     if nombre == " ":
         print("Ingrese un nombre válido.")
     else:
         lista = lista_original[:]
         flag_jugador = False
         for jugador in lista:
-            busqueda = re.search(f'{nombre}', jugador["nombre"], re.I)
+            busqueda = buscar_por_nombre(lista, jugador, nombre)
             if busqueda:
                 flag_jugador = True
                 print(jugador["nombre"] + "\n")
@@ -273,7 +293,50 @@ def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_ord
             jugador[1])
         print(mensaje)
     return lista_jugador_nombre    
+
+def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
+    '''
+    Esta función muestra los logros de todos los jugadores cuyos nombres coincidan con la búsqueda pasada por param.
+    ------------
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    nombre: tipo str -> string que posee el nombre o parte del nombre del jugador a buscar.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.    
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    if nombre == " ":
+        print("Ingrese un nombre válido.")
+    else:
+        lista = lista_original[:]
+        logro_hof = "Miembro del Salon de la Fama del Baloncesto"
+        lista_jugadores_hof = []
+        flag_jugador = False
+        for jugador in lista:
+            busqueda = buscar_por_nombre(lista, jugador, nombre)
+            if busqueda:
+                flag_jugador = True
+                for logro in jugador["logros"]:
+                    if logro == logro_hof:
+                        lista_jugadores_hof.append([jugador["nombre"],"Si"])
+                        break
+                else:
+                    lista_jugadores_hof.append([jugador["nombre"],"No"])
+        mensaje = ""
+        if flag_jugador == False:
+            print("No existe jugador con ese nombre.")
+        else:
+            for jugador in lista_jugadores_hof:
+                mensaje += "Nombre: {0}\nSe encuentra dentro del HOF?: {1}\n\n".format(
+                    jugador[0],
+                    jugador[1]
+                )
+            print(mensaje)
+
     
+
         
         
     

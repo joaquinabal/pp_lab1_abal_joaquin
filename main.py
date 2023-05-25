@@ -9,10 +9,11 @@ from funciones import (
     generar_path_jugador,
     mostrar_logros_por_busqueda,
     calcular_promedio_total,
-    mostrar_estadistica_por_jugador_ordenado
+    mostrar_estadistica_por_jugador_ordenado,
+    mostrar_jugador_hof
 )
 
-menu = "{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6} ".format(
+menu = "{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7} ".format(
 "----------------------------------------------------------------",
 """1- Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
 Nombre Jugador - Posición. Ejemplo:
@@ -39,6 +40,10 @@ y pertenencia al Salón de la Fama del Baloncesto, etc.
 """
 5- Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, 
 ordenado por nombre de manera ascendente. 
+""",
+"""
+6- Permitir al usuario ingresar el nombre de un jugador y 
+mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
 """,
 "Ingrese la opción deseada" 
 )
@@ -85,9 +90,11 @@ while True:
                 ))
             else:
                 print("La estadística buscada no existe.")
+
+        case 6:
+            nombre_jugador = input("Ingrese el nombre del jugador a buscar: ")
+            mostrar_jugador_hof(lista_dreamteam, nombre_jugador)
                 
-    
-    
     input("Apriete una tecla para continuar...")
                 
         
