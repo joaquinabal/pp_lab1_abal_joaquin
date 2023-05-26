@@ -14,45 +14,41 @@ from funciones import (
     mostrar_jugador_mayor_stat
 )
 
-menu = "{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n{8} ".format(
-"----------------------------------------------------------------",
-"""1- Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
+menu = "{0}".format(
+"""--------------------------------------------------------
+1- Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
 Nombre Jugador - Posición. Ejemplo:
-Michael Jordan - Escolta\n""",
-"""
+Michael Jordan - Escolta
+
 2- Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas completas, 
 incluyendo temporadas jugadas, puntos totales, promedio de puntos por partido, rebotes totales, 
 promedio de rebotes por partido, asistencias totales, promedio de asistencias por partido, robos totales, 
 bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
-""",
-"""
+
 3- Después de mostrar las estadísticas de un jugador seleccionado por el usuario, 
 permite al usuario guardar las estadísticas de ese jugador en un archivo CSV. 
 El archivo CSV debe contener los siguientes campos: nombre, posición, temporadas, 
 puntos totales, promedio de puntos por partido, rebotes totales, promedio de rebotes por partido, 
 asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
 porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
-""",
-"""
+
 4- Permitir al usuario buscar un jugador por su nombre y mostrar sus logros, 
 como campeonatos de la NBA, participaciones en el All-Star 
 y pertenencia al Salón de la Fama del Baloncesto, etc.
-""",
-"""
+
 5- Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, 
 ordenado por nombre de manera ascendente. 
-""",
-"""
+
 6- Permitir al usuario ingresar el nombre de un jugador y 
 mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
-""",
-"""
+
 7- Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
-""",
-"""
+
 8- Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
-"""
-"Ingrese la opción deseada" 
+
+9- Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
+
+Ingrese la opción deseada: """ 
 )
 
 path_JSON = "pp_lab1_abal_joaquin/dt.json"
@@ -108,6 +104,10 @@ while True:
             
         case 8:
             estadistica_a_buscar = "porcentaje_tiros_de_campo"
+            mostrar_jugador_mayor_stat(lista_dreamteam, estadistica_a_buscar)
+            
+        case 9:
+            estadistica_a_buscar = "asistencias_totales"
             mostrar_jugador_mayor_stat(lista_dreamteam, estadistica_a_buscar)
 
                     
