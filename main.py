@@ -49,6 +49,9 @@ mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
 """
 7- Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 """,
+"""
+8- Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
+"""
 "Ingrese la opción deseada" 
 )
 
@@ -101,6 +104,10 @@ while True:
                 
         case 7:
             estadistica_a_buscar = "rebotes_totales"
+            mostrar_jugador_mayor_stat(lista_dreamteam, estadistica_a_buscar)
+            
+        case 8:
+            estadistica_a_buscar = "porcentaje_tiros_de_campo"
             mostrar_jugador_mayor_stat(lista_dreamteam, estadistica_a_buscar)
 
                     
