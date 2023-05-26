@@ -30,7 +30,7 @@ def mostrar_jugadores_dreamteam(lista_original: list[dict], flag_indice: bool):
         return False
     lista_jugadores = lista_original[:]
     lista_jugadores_nombre_pos = []
-    for indice in range(len(lista_jugadores) - 1):
+    for indice in range(len(lista_jugadores)):
         lista_jugadores_nombre_pos.append([indice, lista_jugadores[indice]["nombre"], lista_jugadores[indice]["posicion"]])
     for jugador in lista_jugadores_nombre_pos:
         if not flag_indice:
@@ -358,6 +358,35 @@ def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
     print("El jugador con más {0} es {1}, con {2}".format(
         estadistica_str, lista_jugador_mayor_valor_stat[0], lista_jugador_mayor_valor_stat[1] 
     ))
+    
+def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistica: str, valor_stat: float):
+    '''
+    Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
+    -----------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    estadistica: tipo string -> la key de la estadística a chequear.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista = lista_original[:]
+    estadistica_str = estadistica.replace("_"," ")
+    lista_jugadores_prom_mayor = []
+    for jugador in lista:
+        if jugador["estadisticas"][estadistica] > valor_stat:
+            lista_jugadores_prom_mayor.append([jugador["nombre"], jugador["estadisticas"][estadistica]])
+    if not lista_jugadores_prom_mayor:
+        print("Ningún jugador posee un mayor valor que el ingresado en {0}".format(estadistica_str))
+    else:
+        mensaje = "\nValor Ingresado: {0}\nJugadores que superar ese valor en {1}:\n".format(valor_stat, estadistica_str)
+        for jugador in lista_jugadores_prom_mayor:
+            mensaje += "{0} - {1}\n".format(jugador[0], jugador[1])
+        print(mensaje)
+    
 
 
 
