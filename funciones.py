@@ -219,6 +219,8 @@ def calcular_promedio_total(lista_original: list[dict], estadistica: str):
         print("Lista vacía.")
         return False
     lista = lista_original[:]
+    if len(lista) <= 1:
+        return lista
     contador = 0
     acumulador = 0
     if estadistica in lista[0]["estadisticas"].keys():
@@ -230,38 +232,51 @@ def calcular_promedio_total(lista_original: list[dict], estadistica: str):
     else:
         print("Estadística inexistente.")
 
-def ordenar_lista_segun_key(lista_original:list, key_a_ordenar: str)->list:
+def ordenar_lista_segun_key(lista_original:list, key_a_ordenar: str, flag_estadistica= False, orden_asc=True)->list:
     '''
-    Esta función genera una lista ordenada según el param "key_a_ordenar" a través del método quick_sort.
+    Esta función genera una lista ordenada según el param "key_a_ordenar" a través de un método de ordenamiento.
     -----------
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     key_a_ordenar: tipo string -> la key cuyo valor se va a utilizar como el parámetro del ordenamiento.
+    flag_estadistica: tipo bool - definido en False -> flag que determina si la key a ordenar se encuentra dentro de "estadisticas" o no.
+    orden_asc: tipo bool - definido en True -> variable que determina si el orden es ascendente(True) o descendente(False)
     -----------
     Retorna:
     False: en caso de que lista_original se encuentre vacía. 
-    lista_iz: tipo list -> la lista ordenada.
+    lista: tipo list -> la lista ordenada.
     '''
     if len(lista_original) == 0:
         print("Lista vacía.")
         return False
     lista = lista_original[:]
-    lista_de = []
-    lista_iz = []
-    if(len(lista)<=1):
-        return lista
-    else:
-        pivot = lista[0]
-        for elemento in lista[1:]:
-            if(elemento[key_a_ordenar] > pivot[key_a_ordenar]):
-                lista_de.append(elemento)
-            else:
-                lista_iz.append(elemento)
-    lista_iz = ordenar_lista_segun_key(lista_iz, key_a_ordenar)
-    lista_iz.append(pivot) 
-    lista_de = ordenar_lista_segun_key(lista_de, key_a_ordenar)
-    lista_iz.extend(lista_de) 
-    return lista_iz
+    rango_a = len(lista)
+    flag_swap = True
+    contador = 0
+    while(flag_swap):
+        flag_swap = False
+        rango_a = rango_a - 1
+        for indice_A in range(rango_a):
+            contador += 1
+            if flag_estadistica == False:
+                if orden_asc == True:   
+                    if lista[indice_A][key_a_ordenar] > lista[indice_A+1][key_a_ordenar]:
+                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        flag_swap = True
+                elif orden_asc == False:
+                    if lista[indice_A][key_a_ordenar] < lista[indice_A+1][key_a_ordenar]:
+                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        flag_swap = True
+            elif flag_estadistica == True:
+                if orden_asc == True:   
+                    if lista[indice_A]["estadisticas"][key_a_ordenar] > lista[indice_A+1]["estadisticas"][key_a_ordenar]:
+                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        flag_swap = True
+                elif orden_asc == False:
+                    if lista[indice_A]["estadisticas"][key_a_ordenar] < lista[indice_A+1]["estadisticas"][key_a_ordenar]:
+                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        flag_swap = True
+    return lista
 
 def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_orden: str, estadistica: str):
     '''

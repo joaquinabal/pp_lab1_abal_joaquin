@@ -12,7 +12,8 @@ from funciones import (
     mostrar_estadistica_por_jugador_ordenado,
     mostrar_jugador_hof,
     mostrar_jugador_mayor_stat,
-    mostrar_jugadores_promediado_mas_stat
+    mostrar_jugadores_promediado_mas_stat,
+    ordenar_lista_segun_key
 )
 
 menu = "{0}".format(
@@ -167,8 +168,10 @@ while True:
                 mostrar_jugadores_promediado_mas_stat(lista_dreamteam,estadistica_a_buscar,float(valor_ingresado))
             else:
                 print("Valor ingresado erróneo, por favor vuelva al menú e ingrese una opción nuevamente.")                            
-                    
-        
+            
+        case 16:
+            estadistica_a_buscar = "porcentaje_tiros_libres"
+            print(ordenar_lista_segun_key(lista_dreamteam,estadistica_a_buscar, True, False))
     input("Apriete una tecla para continuar...")
                 
         
