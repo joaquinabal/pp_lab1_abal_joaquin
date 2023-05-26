@@ -296,7 +296,7 @@ def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_ord
 
 def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
     '''
-    Esta función muestra los logros de todos los jugadores cuyos nombres coincidan con la búsqueda pasada por param.
+    Esta función muestra un listado de jugadores, junto a su nombre y si se encuentran o no en el salon de la fama. )HOF)
     ------------
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     nombre: tipo str -> string que posee el nombre o parte del nombre del jugador a buscar.
@@ -336,6 +336,16 @@ def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
             print(mensaje)
 
 def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
+    '''
+    Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
+    -----------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    estadistica: tipo string -> la key de la estadística a chequear.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    '''
     if len(lista_original) == 0:
         print("Lista vacía.")
         return False
