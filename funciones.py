@@ -377,7 +377,7 @@ def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
 def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistica: str, valor_stat: float):
     '''
     Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
-    -----------
+    ------------
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     estadistica: tipo string -> la key de la estadística a chequear.
@@ -402,8 +402,36 @@ def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistic
             mensaje += "{0} - {1}\n".format(jugador[0], jugador[1])
         print(mensaje)
     
+def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], estadistica: str):
+    '''
+    Esta función genera el promedio de la suma de la estadística elegida, sin tener en cuenta el stat del jugador que peor promedia.
+    ------------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    estadistica: tipo string -> la key de la estadística a chequear.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    promedio: tipo float -> el valor del promedio calculado.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista_aux = lista_original[:]
+    contador = 0
+    acumulador = 0
+    if estadistica in lista_aux[0]["estadisticas"].keys():
+        lista_ordenada = ordenar_lista_segun_key(lista_aux,estadistica, True, False)
+        lista_ordenada.pop()
+        for jugador in lista_ordenada:
+            acumulador += jugador["estadisticas"][estadistica]
+            contador += 1
+        promedio = acumulador / contador
+        return promedio
+    else:
+        print("Estadística inexistente.")
 
-
+    
 
         
         

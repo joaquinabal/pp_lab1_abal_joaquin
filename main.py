@@ -13,7 +13,7 @@ from funciones import (
     mostrar_jugador_hof,
     mostrar_jugador_mayor_stat,
     mostrar_jugadores_promediado_mas_stat,
-    ordenar_lista_segun_key
+    generar_promedio_segun_stat_menos_peor_valor,
 )
 
 menu = "{0}".format(
@@ -61,6 +61,8 @@ mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
 14- Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
 
 15- Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros libres superior a ese valor.
+
+16- Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
 
 
 Ingrese la opción deseada: """ 
@@ -170,8 +172,17 @@ while True:
                 print("Valor ingresado erróneo, por favor vuelva al menú e ingrese una opción nuevamente.")                            
             
         case 16:
-            estadistica_a_buscar = "porcentaje_tiros_libres"
-            print(ordenar_lista_segun_key(lista_dreamteam,estadistica_a_buscar, True, False))
+            estadistica_a_buscar = "promedio_puntos_por_partido"
+            promedio = generar_promedio_segun_stat_menos_peor_valor(lista_dreamteam, estadistica_a_buscar)
+            print("\nEl promedio total del equipo de {0} sin contar el jugador que peor promedia es de: {1}\n".format(
+            estadistica_a_buscar.replace("_"," "),
+            promedio        
+            ))
+
+
+    
+    
+    
     input("Apriete una tecla para continuar...")
                 
         
