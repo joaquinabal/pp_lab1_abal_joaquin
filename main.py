@@ -14,6 +14,8 @@ from funciones import (
     mostrar_jugador_mayor_stat,
     mostrar_jugadores_promediado_mas_stat,
     generar_promedio_segun_stat_menos_peor_valor,
+    mostrar_jugador_mayor_cant_logros,
+    ordenar_lista_segun_key
 )
 
 menu = "{0}".format(
@@ -22,33 +24,25 @@ menu = "{0}".format(
 Nombre Jugador - Posición. Ejemplo:
 Michael Jordan - Escolta
 
-2- Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas completas, 
+2- Elegir un jugador por su índice y mostrar sus estadísticas completas, 
 incluyendo temporadas jugadas, puntos totales, promedio de puntos por partido, rebotes totales, 
 promedio de rebotes por partido, asistencias totales, promedio de asistencias por partido, robos totales, 
 bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
-3- Después de mostrar las estadísticas de un jugador seleccionado por el usuario, 
-permite al usuario guardar las estadísticas de ese jugador en un archivo CSV. 
-El archivo CSV debe contener los siguientes campos: nombre, posición, temporadas, 
-puntos totales, promedio de puntos por partido, rebotes totales, promedio de rebotes por partido, 
-asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
-porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
+3- Guardar las estadísticas de ese jugador en un archivo CSV. 
 
-4- Permitir al usuario buscar un jugador por su nombre y mostrar sus logros, 
-como campeonatos de la NBA, participaciones en el All-Star 
-y pertenencia al Salón de la Fama del Baloncesto, etc.
+4- Buscar un jugador por su nombre y mostrar sus logros, 
 
-5- Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, 
+5- Mostrar el promedio de puntos por partido de todo el equipo del Dream Team, 
 ordenado por nombre de manera ascendente. 
 
-6- Ingresar el nombre de un jugador y 
-mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
+6- Ingresar el nombre de un jugador y mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
 
-7- Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
+7- Mostrar el jugador con la mayor cantidad de rebotes totales.
 
-8- Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
+8- Mostrar el jugador con el mayor porcentaje de tiros de campo.
 
-9- Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
+9- Mostrar el jugador con la mayor cantidad de asistencias totales.
 
 10- Ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
 
@@ -56,13 +50,21 @@ mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
 
 12- Ingresar un valor y mostrar los jugadores que han promediado más asistencias por partido que ese valor.
 
-13- Calcular y mostrar el jugador con la mayor cantidad de robos totales.
+13- Mostrar el jugador con la mayor cantidad de robos totales.
 
-14- Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
+14- Mostrar el jugador con la mayor cantidad de bloqueos totales.
 
-15- Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros libres superior a ese valor.
+15- Ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros libres superior a ese valor.
 
-16- Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
+16- Mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
+
+17- Mostrar el jugador con la mayor cantidad de logros obtenidos.
+
+18- Ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros triples superior a ese valor.
+
+19- Mostrar el jugador con la mayor cantidad de temporadas jugadas
+
+20- Ingresar un valor y mostrar los jugadores, ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a ese valor.
 
 
 Ingrese la opción deseada: """ 
@@ -178,11 +180,31 @@ while True:
             estadistica_a_buscar.replace("_"," "),
             promedio        
             ))
+            
+        case 17:
+            mostrar_jugador_mayor_cant_logros(lista_dreamteam)
+            
+        case 18:
+            estadistica_a_buscar = "porcentaje_tiros_triples"
+            valor_ingresado = input("Ingrese un valor para comparar: ")
+            if valor_ingresado.replace(".","").isnumeric():
+                mostrar_jugadores_promediado_mas_stat(lista_dreamteam,estadistica_a_buscar,float(valor_ingresado))
+            else:
+                print("Valor ingresado erróneo, por favor vuelva al menú e ingrese una opción nuevamente.")
 
-
+        case 19:
+            estadistica_a_buscar = "temporadas"
+            mostrar_jugador_mayor_stat(lista_dreamteam, estadistica_a_buscar)
     
+        case 20:
+            lista_ordenada = ordenar_lista_segun_key(lista_dreamteam, "posicion")
+            estadistica_a_buscar = "porcentaje_tiros_de_campo"
+            valor_ingresado = input("Ingrese un valor para comparar: ")
+            if valor_ingresado.replace(".","").isnumeric():
+               mostrar_jugadores_promediado_mas_stat(lista_ordenada,estadistica_a_buscar,float(valor_ingresado), True)
+            else:
+                print("Valor ingresado erróneo, por favor vuelva al menú e ingrese una opción nuevamente.")  
     
-    
-    input("Apriete una tecla para continuar...")
+    input("\n\nApriete una tecla para continuar...")
                 
         

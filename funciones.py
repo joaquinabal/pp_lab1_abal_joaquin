@@ -374,13 +374,14 @@ def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
         estadistica_str, lista_jugador_mayor_valor_stat[0], lista_jugador_mayor_valor_stat[1] 
     ))
     
-def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistica: str, valor_stat: float):
+def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistica: str, valor_stat: float, flag_mostrar_posicion: False):
     '''
-    Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
+    Esta función muestra los jugadores que superen el valor de la estadística deseada.
     ------------
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     estadistica: tipo string -> la key de la estadística a chequear.
+    valor_stat: tipo float -> el valor de la estadística a comparar.
     ------------
     Retorna:
     False: en caso de que lista_original se encuentre vacía.
@@ -393,14 +394,18 @@ def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistic
     lista_jugadores_prom_mayor = []
     for jugador in lista:
         if jugador["estadisticas"][estadistica] > valor_stat:
-            lista_jugadores_prom_mayor.append([jugador["nombre"], jugador["estadisticas"][estadistica]])
+            lista_jugadores_prom_mayor.append([jugador["nombre"], jugador["estadisticas"][estadistica], jugador["posicion"]])
     if not lista_jugadores_prom_mayor:
         print("Ningún jugador posee un mayor valor que el ingresado en {0}".format(estadistica_str))
     else:
         mensaje = "\nValor Ingresado: {0}\nJugadores que superar ese valor en {1}:\n".format(valor_stat, estadistica_str)
         for jugador in lista_jugadores_prom_mayor:
-            mensaje += "{0} - {1}\n".format(jugador[0], jugador[1])
+            if flag_mostrar_posicion == False:
+                mensaje += "{0} - {1}\n".format(jugador[0], jugador[1])
+            elif flag_mostrar_posicion:
+                mensaje += "{0} - {1} - {2}\n".format(jugador[0], jugador[2], jugador[1]) 
         print(mensaje)
+        return lista_jugadores_prom_mayor
     
 def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], estadistica: str):
     '''
@@ -431,8 +436,33 @@ def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], est
     else:
         print("Estadística inexistente.")
 
+def mostrar_jugador_mayor_cant_logros(lista_original: list[dict]):
+    '''
+    Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
+    -----------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    estadistica: tipo string -> la key de la estadística a chequear.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista = lista_original[:]
+    lista_jugador_mayor_cant_logros = ["",-1]
+    for jugador in lista:
+        if len(jugador["logros"]) > lista_jugador_mayor_cant_logros[1]:
+            lista_jugador_mayor_cant_logros = [jugador["nombre"], len(jugador["logros"])]
+    print("El jugador con más cantidad de logros es {0}, con {1}".format(
+       lista_jugador_mayor_cant_logros[0], lista_jugador_mayor_cant_logros[1] 
+    ))
     
-
-        
-        
+def mostrar_jugadores_ordenados_mayor_stat(lista_original: list[dict], key_orden: str, estadistica: str):
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista_aux = lista_original[:]
+    lista_ordenada = ordenar_lista_segun_key(lista_aux, "posicion")
     
