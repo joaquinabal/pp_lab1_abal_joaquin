@@ -15,7 +15,8 @@ from funciones import (
     mostrar_jugadores_promediado_mas_stat,
     generar_promedio_segun_stat_menos_peor_valor,
     mostrar_jugador_mayor_cant_logros,
-    ordenar_lista_segun_key
+    ordenar_lista_segun_key,
+    exportar_ranking_csv
 )
 
 menu = "{0}".format(
@@ -66,6 +67,9 @@ ordenado por nombre de manera ascendente.
 
 20- Ingresar un valor y mostrar los jugadores, ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a ese valor.
 
+23- BONUS TRACK!!! Generar un .csv de una tabla con la posición de ranking de Puntos, Rebotes, Asistencias y Robos de cada jugador.
+
+0- SALIR
 
 Ingrese la opción deseada: """ 
 )
@@ -204,7 +208,15 @@ while True:
                mostrar_jugadores_promediado_mas_stat(lista_ordenada,estadistica_a_buscar,float(valor_ingresado), True)
             else:
                 print("Valor ingresado erróneo, por favor vuelva al menú e ingrese una opción nuevamente.")  
+
+        case 23:
+            exportar_ranking_csv(lista_dreamteam, 'pp_lab1_abal_joaquin/ranking_jugadores.csv')
     
+        case 0:
+            print("Hasta pronto!")
+            break
+
+
     input("\n\nApriete una tecla para continuar...")
                 
         

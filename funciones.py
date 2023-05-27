@@ -438,11 +438,9 @@ def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], est
 
 def mostrar_jugador_mayor_cant_logros(lista_original: list[dict]):
     '''
-    Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
-    -----------
+    Esta función muestra al jugador que posea la mayor cantidad de logros.
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
-    estadistica: tipo string -> la key de la estadística a chequear.
     ------------
     Retorna:
     False: en caso de que lista_original se encuentre vacía.
@@ -466,3 +464,47 @@ def mostrar_jugadores_ordenados_mayor_stat(lista_original: list[dict], key_orden
     lista_aux = lista_original[:]
     lista_ordenada = ordenar_lista_segun_key(lista_aux, "posicion")
     
+def calcular_lista_ranking_jugadores_stats(lista_original: list[dict]):
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista_aux = lista_original[:]
+    lista_ranking = []
+    contador = 0
+    lista_puntos = ordenar_lista_segun_key(lista_aux, "puntos_totales", True, False)
+    lista_rebotes = ordenar_lista_segun_key(lista_aux, "rebotes_totales", True, False)
+    lista_asistencias = ordenar_lista_segun_key(lista_aux, "asistencias_totales", True, False)
+    lista_robos = ordenar_lista_segun_key(lista_aux, "robos_totales", True, False)
+    while contador <= len(lista_aux):
+        for indice_aux in range(len(lista_aux)):
+            lista_ranking_jugador = []
+            for indice_puntos in range(len(lista_aux)):
+                if lista_aux[indice_aux]["nombre"] == lista_puntos[indice_puntos]["nombre"]:
+                    lista_ranking_jugador.extend([lista_aux[indice_aux]["nombre"], str(indice_puntos + 1)])
+            for indice_rebotes in range(len(lista_aux)):
+                if lista_aux[indice_aux]["nombre"] == lista_rebotes[indice_rebotes]["nombre"]:
+                    lista_ranking_jugador.extend([str(indice_rebotes + 1)])
+            for indice_asistencias in range(len(lista_aux)):
+                if lista_aux[indice_aux]["nombre"] == lista_asistencias[indice_asistencias]["nombre"]:
+                    lista_ranking_jugador.extend([str(indice_asistencias + 1)])
+            for indice_robos in range(len(lista_aux)):
+                if lista_aux[indice_aux]["nombre"] == lista_robos[indice_robos]["nombre"]:
+                    lista_ranking_jugador.extend([str(indice_robos + 1)])
+            contador += 1
+            lista_ranking.append(lista_ranking_jugador)
+    return lista_ranking
+        
+
+def exportar_ranking_csv(lista_original: list[dict], path: StopIteration):
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista_ranking = calcular_lista_ranking_jugadores_stats(lista_original) 
+    lista_keys = ["Jugador","Puntos","Rebotes","Asistencias","Robos"]
+    string_keys = ",".join(lista_keys)
+    mensaje = string_keys + "\n"
+    for jugador in lista_ranking:
+        mensaje += ",".join(jugador) + "\n"
+    with open(path, "w") as archivo:
+        archivo.writelines([mensaje])
+    print("el archivo fue creado en {0}".format(path))
