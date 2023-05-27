@@ -1,7 +1,8 @@
 import json
 import re
 
-def leer_archivo(ruta:str):
+
+def leer_archivo(ruta: str):
     '''
     Esta función lee un archivo json y lo devuelve como una lista.
     ------------
@@ -13,6 +14,7 @@ def leer_archivo(ruta:str):
     with open(ruta, 'r') as archivo:
         diccionario = json.load(archivo)
     return diccionario["jugadores"]
+
 
 def mostrar_jugadores_dreamteam(lista_original: list[dict], flag_indice: bool):
     '''
@@ -31,14 +33,17 @@ def mostrar_jugadores_dreamteam(lista_original: list[dict], flag_indice: bool):
     lista_jugadores = lista_original[:]
     lista_jugadores_nombre_pos = []
     for indice in range(len(lista_jugadores)):
-        lista_jugadores_nombre_pos.append([indice, lista_jugadores[indice]["nombre"], lista_jugadores[indice]["posicion"]])
+        lista_jugadores_nombre_pos.append(
+            [indice, lista_jugadores[indice]["nombre"], lista_jugadores[indice]["posicion"]])
     for jugador in lista_jugadores_nombre_pos:
         if not flag_indice:
-            mensaje = "{0} - {1}\n".format(jugador[1],jugador[2])
+            mensaje = "{0} - {1}\n".format(jugador[1], jugador[2])
         else:
-            mensaje = "{0} - {1} - {2}\n".format(jugador[0],jugador[1],jugador[2])   
+            mensaje = "{0} - {1} - {2}\n".format(
+                jugador[0], jugador[1], jugador[2])
         print(mensaje + "\n")
-        
+
+
 def validacion_menu(numero) -> bool:
     '''
     Esta función busca validar el numero ingresado para que sea apto para el menú.(1-20,23)
@@ -55,7 +60,7 @@ def validacion_menu(numero) -> bool:
         return True
     else:
         return False
-                
+
 
 def mostrar_estadisticas(lista_original: list[dict], indice: int):
     '''
@@ -69,7 +74,7 @@ def mostrar_estadisticas(lista_original: list[dict], indice: int):
     mensaje: tipo string -> el string que contiene las estadisticas del jugador.
     False: en caso de que lista_original se encuentre vacía.
     '''
-    
+
     if not lista_original:
         print("La lista original se encuentra vacia.")
         return False
@@ -106,6 +111,7 @@ def mostrar_estadisticas(lista_original: list[dict], indice: int):
     )
     return mensaje
 
+
 def generar_path_jugador(lista_original: list, indice: int, path: str):
     '''
     Esta función genera una ruta que incluye el nombre del jugador seleccionado por indice.
@@ -121,11 +127,12 @@ def generar_path_jugador(lista_original: list, indice: int, path: str):
     '''
     if len(lista_original) == 0:
         print("Lista vacía.")
-        return False   
+        return False
     lista = lista_original[:]
     nombre_jugador = lista[indice]["nombre"]
-    path_final = path + nombre_jugador.replace(" ","_") + ".csv"
+    path_final = path + nombre_jugador.replace(" ", "_") + ".csv"
     return path_final
+
 
 def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
     '''
@@ -143,7 +150,7 @@ def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
         print("Lista vacía.")
         return False
     lista = lista_original[:]
-    lista_keys = ["nombre","posicion"]
+    lista_keys = ["nombre", "posicion"]
     lista_valores_stats = [lista[indice]["nombre"], lista[indice]["posicion"]]
     lista_keys.extend(lista[indice]["estadisticas"].keys())
     for value in lista[indice]["estadisticas"].values():
@@ -155,6 +162,7 @@ def guardar_csv_jugador_stats(lista_original: list, indice: int, path: str):
     with open(path, "w") as archivo:
         archivo.writelines([datos_para_csv])
     print("el archivo fue creado en {0}".format(path))
+
 
 def buscar_por_nombre(lista_original: list[dict], jugador: dict, nombre: str):
     '''
@@ -170,10 +178,10 @@ def buscar_por_nombre(lista_original: list[dict], jugador: dict, nombre: str):
         return -1
     if nombre == " ":
         print("Ingrese un nombre válido.")
-    else:  
+    else:
         busqueda = re.search(f'{nombre}', jugador["nombre"], re.I)
         return busqueda
-        
+
 
 def mostrar_logros_por_busqueda(lista_original: list[dict], nombre: str):
     '''
@@ -199,9 +207,10 @@ def mostrar_logros_por_busqueda(lista_original: list[dict], nombre: str):
                 flag_jugador = True
                 print(jugador["nombre"] + "\n")
                 for logro in jugador["logros"]:
-                    print("- " + logro + "\n")       
+                    print("- " + logro + "\n")
         if flag_jugador == False:
             print("No existe jugador con ese nombre.")
+
 
 def calcular_promedio_total(lista_original: list[dict], estadistica: str):
     '''
@@ -232,7 +241,8 @@ def calcular_promedio_total(lista_original: list[dict], estadistica: str):
     else:
         print("Estadística inexistente.")
 
-def ordenar_lista_segun_key(lista_original:list, key_a_ordenar: str, flag_estadistica= False, orden_asc=True)->list:
+
+def ordenar_lista_segun_key(lista_original: list, key_a_ordenar: str, flag_estadistica=False, orden_asc=True) -> list:
     '''
     Esta función genera una lista ordenada según el param "key_a_ordenar" a través de un método de ordenamiento.
     -----------
@@ -253,30 +263,35 @@ def ordenar_lista_segun_key(lista_original:list, key_a_ordenar: str, flag_estadi
     rango_a = len(lista)
     flag_swap = True
     contador = 0
-    while(flag_swap):
+    while (flag_swap):
         flag_swap = False
         rango_a = rango_a - 1
         for indice_A in range(rango_a):
             contador += 1
             if flag_estadistica == False:
-                if orden_asc == True:   
+                if orden_asc == True:
                     if lista[indice_A][key_a_ordenar] > lista[indice_A+1][key_a_ordenar]:
-                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        lista[indice_A], lista[indice_A +
+                                               1] = lista[indice_A+1], lista[indice_A]
                         flag_swap = True
                 elif orden_asc == False:
                     if lista[indice_A][key_a_ordenar] < lista[indice_A+1][key_a_ordenar]:
-                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        lista[indice_A], lista[indice_A +
+                                               1] = lista[indice_A+1], lista[indice_A]
                         flag_swap = True
             elif flag_estadistica == True:
-                if orden_asc == True:   
+                if orden_asc == True:
                     if lista[indice_A]["estadisticas"][key_a_ordenar] > lista[indice_A+1]["estadisticas"][key_a_ordenar]:
-                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        lista[indice_A], lista[indice_A +
+                                               1] = lista[indice_A+1], lista[indice_A]
                         flag_swap = True
                 elif orden_asc == False:
                     if lista[indice_A]["estadisticas"][key_a_ordenar] < lista[indice_A+1]["estadisticas"][key_a_ordenar]:
-                        lista[indice_A],lista[indice_A+1] = lista[indice_A+1],lista[indice_A]
+                        lista[indice_A], lista[indice_A +
+                                               1] = lista[indice_A+1], lista[indice_A]
                         flag_swap = True
     return lista
+
 
 def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_orden: str, estadistica: str):
     '''
@@ -291,7 +306,7 @@ def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_ord
     Retorna:
     False: en caso de que lista_original se encuentre vacía. 
     lista_jugador_nombre: tipo list[list] -> una lista de listas que posee el nombre y el valor de la estadística.  
-    '''   
+    '''
     if len(lista_original) == 0:
         print("Lista vacía.")
         return False
@@ -299,15 +314,17 @@ def mostrar_estadistica_por_jugador_ordenado(lista_original: list[dict], key_ord
     lista = ordenar_lista_segun_key(lista_aux, key_orden)
     lista_jugador_nombre = []
     for jugador in lista:
-        lista_jugador_nombre.append([jugador["nombre"], jugador["estadisticas"][estadistica]])
-    estadistica_str = estadistica.replace("_"," ").capitalize()
+        lista_jugador_nombre.append(
+            [jugador["nombre"], jugador["estadisticas"][estadistica]])
+    estadistica_str = estadistica.replace("_", " ").capitalize()
     for jugador in lista_jugador_nombre:
         mensaje = "Jugador: {0}\n{1}: {2}\n".format(
             jugador[0],
             estadistica_str,
             jugador[1])
         print(mensaje)
-    return lista_jugador_nombre    
+    return lista_jugador_nombre
+
 
 def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
     '''
@@ -335,10 +352,10 @@ def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
                 flag_jugador = True
                 for logro in jugador["logros"]:
                     if logro == logro_hof:
-                        lista_jugadores_hof.append([jugador["nombre"],"Si"])
+                        lista_jugadores_hof.append([jugador["nombre"], "Si"])
                         break
                 else:
-                    lista_jugadores_hof.append([jugador["nombre"],"No"])
+                    lista_jugadores_hof.append([jugador["nombre"], "No"])
         mensaje = ""
         if flag_jugador == False:
             print("No existe jugador con ese nombre.")
@@ -349,6 +366,7 @@ def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
                     jugador[1]
                 )
             print(mensaje)
+
 
 def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
     '''
@@ -365,15 +383,17 @@ def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
         print("Lista vacía.")
         return False
     lista = lista_original[:]
-    estadistica_str = estadistica.replace("_"," ")
-    lista_jugador_mayor_valor_stat = ["",-1]
+    estadistica_str = estadistica.replace("_", " ")
+    lista_jugador_mayor_valor_stat = ["", -1]
     for jugador in lista:
         if jugador["estadisticas"][estadistica] > lista_jugador_mayor_valor_stat[1]:
-            lista_jugador_mayor_valor_stat = [jugador["nombre"], jugador["estadisticas"][estadistica]]
+            lista_jugador_mayor_valor_stat = [
+                jugador["nombre"], jugador["estadisticas"][estadistica]]
     print("El jugador con más {0} es {1}, con {2}".format(
-        estadistica_str, lista_jugador_mayor_valor_stat[0], lista_jugador_mayor_valor_stat[1] 
+        estadistica_str, lista_jugador_mayor_valor_stat[0], lista_jugador_mayor_valor_stat[1]
     ))
-    
+
+
 def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistica: str, valor_stat: float, flag_mostrar_posicion: False):
     '''
     Esta función muestra los jugadores que superen el valor de la estadística deseada.
@@ -390,23 +410,28 @@ def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistic
         print("Lista vacía.")
         return False
     lista = lista_original[:]
-    estadistica_str = estadistica.replace("_"," ")
+    estadistica_str = estadistica.replace("_", " ")
     lista_jugadores_prom_mayor = []
     for jugador in lista:
         if jugador["estadisticas"][estadistica] > valor_stat:
-            lista_jugadores_prom_mayor.append([jugador["nombre"], jugador["estadisticas"][estadistica], jugador["posicion"]])
+            lista_jugadores_prom_mayor.append(
+                [jugador["nombre"], jugador["estadisticas"][estadistica], jugador["posicion"]])
     if not lista_jugadores_prom_mayor:
-        print("Ningún jugador posee un mayor valor que el ingresado en {0}".format(estadistica_str))
+        print("Ningún jugador posee un mayor valor que el ingresado en {0}".format(
+            estadistica_str))
     else:
-        mensaje = "\nValor Ingresado: {0}\nJugadores que superar ese valor en {1}:\n".format(valor_stat, estadistica_str)
+        mensaje = "\nValor Ingresado: {0}\nJugadores que superar ese valor en {1}:\n".format(
+            valor_stat, estadistica_str)
         for jugador in lista_jugadores_prom_mayor:
             if flag_mostrar_posicion == False:
                 mensaje += "{0} - {1}\n".format(jugador[0], jugador[1])
             elif flag_mostrar_posicion:
-                mensaje += "{0} - {1} - {2}\n".format(jugador[0], jugador[2], jugador[1]) 
+                mensaje += "{0} - {1} - {2}\n".format(
+                    jugador[0], jugador[2], jugador[1])
         print(mensaje)
         return lista_jugadores_prom_mayor
-    
+
+
 def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], estadistica: str):
     '''
     Esta función genera el promedio de la suma de la estadística elegida, sin tener en cuenta el stat del jugador que peor promedia.
@@ -426,7 +451,8 @@ def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], est
     contador = 0
     acumulador = 0
     if estadistica in lista_aux[0]["estadisticas"].keys():
-        lista_ordenada = ordenar_lista_segun_key(lista_aux,estadistica, True, False)
+        lista_ordenada = ordenar_lista_segun_key(
+            lista_aux, estadistica, True, False)
         lista_ordenada.pop()
         for jugador in lista_ordenada:
             acumulador += jugador["estadisticas"][estadistica]
@@ -436,9 +462,11 @@ def generar_promedio_segun_stat_menos_peor_valor(lista_original: list[dict], est
     else:
         print("Estadística inexistente.")
 
+
 def mostrar_jugador_mayor_cant_logros(lista_original: list[dict]):
     '''
     Esta función muestra al jugador que posea la mayor cantidad de logros.
+    ------------
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     ------------
@@ -449,38 +477,48 @@ def mostrar_jugador_mayor_cant_logros(lista_original: list[dict]):
         print("Lista vacía.")
         return False
     lista = lista_original[:]
-    lista_jugador_mayor_cant_logros = ["",-1]
+    lista_jugador_mayor_cant_logros = ["", -1]
     for jugador in lista:
         if len(jugador["logros"]) > lista_jugador_mayor_cant_logros[1]:
-            lista_jugador_mayor_cant_logros = [jugador["nombre"], len(jugador["logros"])]
+            lista_jugador_mayor_cant_logros = [
+                jugador["nombre"], len(jugador["logros"])]
     print("El jugador con más cantidad de logros es {0}, con {1}".format(
-       lista_jugador_mayor_cant_logros[0], lista_jugador_mayor_cant_logros[1] 
+        lista_jugador_mayor_cant_logros[0], lista_jugador_mayor_cant_logros[1]
     ))
-    
-def mostrar_jugadores_ordenados_mayor_stat(lista_original: list[dict], key_orden: str, estadistica: str):
-    if len(lista_original) == 0:
-        print("Lista vacía.")
-        return False
-    lista_aux = lista_original[:]
-    lista_ordenada = ordenar_lista_segun_key(lista_aux, "posicion")
-    
+
+
 def calcular_lista_ranking_jugadores_stats(lista_original: list[dict]):
+    '''
+    Esta función genera una lista que contiene a los jugadores, con la posición que rankearían según distíntas estadísticas.
+    ------------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    lista_ranking: tipo list[list] -> la lista que posee, en formato de lista, a los jugadores junto a la posición de ranking de las estadísticas.
+    '''
     if len(lista_original) == 0:
         print("Lista vacía.")
         return False
     lista_aux = lista_original[:]
     lista_ranking = []
     contador = 0
-    lista_puntos = ordenar_lista_segun_key(lista_aux, "puntos_totales", True, False)
-    lista_rebotes = ordenar_lista_segun_key(lista_aux, "rebotes_totales", True, False)
-    lista_asistencias = ordenar_lista_segun_key(lista_aux, "asistencias_totales", True, False)
-    lista_robos = ordenar_lista_segun_key(lista_aux, "robos_totales", True, False)
+    lista_puntos = ordenar_lista_segun_key(
+        lista_aux, "puntos_totales", True, False)
+    lista_rebotes = ordenar_lista_segun_key(
+        lista_aux, "rebotes_totales", True, False)
+    lista_asistencias = ordenar_lista_segun_key(
+        lista_aux, "asistencias_totales", True, False)
+    lista_robos = ordenar_lista_segun_key(
+        lista_aux, "robos_totales", True, False)
     while contador <= len(lista_aux):
         for indice_aux in range(len(lista_aux)):
             lista_ranking_jugador = []
             for indice_puntos in range(len(lista_aux)):
                 if lista_aux[indice_aux]["nombre"] == lista_puntos[indice_puntos]["nombre"]:
-                    lista_ranking_jugador.extend([lista_aux[indice_aux]["nombre"], str(indice_puntos + 1)])
+                    lista_ranking_jugador.extend(
+                        [lista_aux[indice_aux]["nombre"], str(indice_puntos + 1)])
             for indice_rebotes in range(len(lista_aux)):
                 if lista_aux[indice_aux]["nombre"] == lista_rebotes[indice_rebotes]["nombre"]:
                     lista_ranking_jugador.extend([str(indice_rebotes + 1)])
@@ -493,14 +531,24 @@ def calcular_lista_ranking_jugadores_stats(lista_original: list[dict]):
             contador += 1
             lista_ranking.append(lista_ranking_jugador)
     return lista_ranking
-        
 
-def exportar_ranking_csv(lista_original: list[dict], path: StopIteration):
+
+def exportar_ranking_csv(lista_original: list[dict], path: str):
+    '''
+    Esta función exporta un archivo .csv con el formato para generar una tabla con la posiciones de las estadísticas.
+    ------------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    path: tipo string -> la ruta del directorio donde se quiere generar el archivo .csv.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    '''
     if len(lista_original) == 0:
         print("Lista vacía.")
         return False
-    lista_ranking = calcular_lista_ranking_jugadores_stats(lista_original) 
-    lista_keys = ["Jugador","Puntos","Rebotes","Asistencias","Robos"]
+    lista_ranking = calcular_lista_ranking_jugadores_stats(lista_original)
+    lista_keys = ["Jugador", "Puntos", "Rebotes", "Asistencias", "Robos"]
     string_keys = ",".join(lista_keys)
     mensaje = string_keys + "\n"
     for jugador in lista_ranking:
