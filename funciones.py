@@ -2,18 +2,20 @@ import json
 import re
 
 
-def leer_archivo(ruta: str):
+def leer_archivo(path: str):
     '''
     Esta función lee un archivo json y lo devuelve como una lista.
     ------------
     Parametro:
-    ruta: de tipo string. es la ruta en donde se encuentra el archivo JSON a leer.
+    path: tipo string -> es la ruta en donde se encuentra el archivo JSON a leer.
     ------------
-    Devuelve: una lista que posee el contenido del archivo JSON.
+    Retorna: 
+    lista_jugadores: tipo list[dict] -> una lista que posee el contenido del archivo JSON.
     '''
-    with open(ruta, 'r') as archivo:
+    with open(path, 'r') as archivo:
         diccionario = json.load(archivo)
-    return diccionario["jugadores"]
+        lista_jugadores = diccionario["jugadores"]
+    return lista_jugadores
 
 
 def mostrar_jugadores_dreamteam(lista_original: list[dict], flag_indice: bool):
@@ -24,7 +26,7 @@ def mostrar_jugadores_dreamteam(lista_original: list[dict], flag_indice: bool):
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
     flag_indice: tipo bool -> una flag que permite mostrar, o no, el indice correspondiente al jugador.
     ---------
-    Devuelve:
+    Retorna:
     False: en caso de que lista_original se encuentre vacía.
     '''
     if not lista_original:
@@ -44,7 +46,7 @@ def mostrar_jugadores_dreamteam(lista_original: list[dict], flag_indice: bool):
         print(mensaje + "\n")
 
 
-def validacion_menu(numero) -> bool:
+def validacion_menu(numero: int):
     '''
     Esta función busca validar el numero ingresado para que sea apto para el menú.(1-20,23)
     -----------
@@ -171,11 +173,16 @@ def buscar_por_nombre(lista_original: list[dict], jugador: dict, nombre: str):
     -----------
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
-    busqueda: tipo match.object | null -> el resultado de del re.match utilizado.
+    jugador: tipo dict -> el jugador a chequear.
+    nombre: el nombre que se quiere chequear a través de RegEx.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    busqueda: tipo match.object | null -> el resultado de del re.search utilizado.
     '''
     if len(lista_original) == 0:
         print("Lista vacía.")
-        return -1
+        return False
     if nombre == " ":
         print("Ingrese un nombre válido.")
     else:
@@ -370,7 +377,7 @@ def mostrar_jugador_hof(lista_original: list[dict], nombre: str):
 
 def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
     '''
-    Esta función muestra al jugador que posea el mayor valor de la estadística deseada.
+    Esta función muestra al jugador o a los jugadores que posea el mayor valor de la estadística deseada.
     -----------
     Parámetros:
     lista_original: tipo list[dict] -> la lista original que se importó del JSON.
@@ -384,14 +391,20 @@ def mostrar_jugador_mayor_stat(lista_original: list[dict], estadistica: str):
         return False
     lista = lista_original[:]
     estadistica_str = estadistica.replace("_", " ")
-    lista_jugador_mayor_valor_stat = ["", -1]
+    lista_jugador_mayor_valor_stat = [["", -1]]
     for jugador in lista:
-        if jugador["estadisticas"][estadistica] > lista_jugador_mayor_valor_stat[1]:
-            lista_jugador_mayor_valor_stat = [
-                jugador["nombre"], jugador["estadisticas"][estadistica]]
-    print("El jugador con más {0} es {1}, con {2}".format(
-        estadistica_str, lista_jugador_mayor_valor_stat[0], lista_jugador_mayor_valor_stat[1]
-    ))
+        if jugador["estadisticas"][estadistica] > lista_jugador_mayor_valor_stat[0][1]:
+            lista_jugador_mayor_valor_stat[0] = [jugador["nombre"], jugador["estadisticas"][estadistica]]
+    for jugador in lista:
+        if jugador["estadisticas"][estadistica] == lista_jugador_mayor_valor_stat[0][1] and jugador["nombre"] != lista_jugador_mayor_valor_stat[0][0]:
+            lista_jugador_mayor_valor_stat.append([jugador["nombre"], jugador["estadisticas"][estadistica]])
+    if len(lista_jugador_mayor_valor_stat) == 1:
+        print("El jugador con más {0} es {1}, con {2}".format(
+           estadistica_str, lista_jugador_mayor_valor_stat[0][0], lista_jugador_mayor_valor_stat[0][1]))
+    elif len(lista_jugador_mayor_valor_stat) > 1:
+        print("Los jugadores con más {0} son: \n".format(estadistica_str))
+        for jugador in lista_jugador_mayor_valor_stat:
+            print("{0} - {1}".format(jugador[0], jugador[1]))
 
 
 def mostrar_jugadores_promediado_mas_stat(lista_original: list[dict], estadistica: str, valor_stat: float, flag_mostrar_posicion: False):

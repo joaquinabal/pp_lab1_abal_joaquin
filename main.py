@@ -107,8 +107,7 @@ while True:
 
         case 5:
             estadistica_a_buscar = "promedio_puntos_por_partido"
-            promedio = calcular_promedio_total(
-                lista_dreamteam, estadistica_a_buscar)
+            promedio = calcular_promedio_total(lista_dreamteam, estadistica_a_buscar)
             if promedio:
                 mostrar_estadistica_por_jugador_ordenado(
                     lista_dreamteam, "nombre", estadistica_a_buscar)
