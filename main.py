@@ -16,7 +16,8 @@ from funciones import (
     generar_promedio_segun_stat_menos_peor_valor,
     mostrar_jugador_mayor_cant_logros,
     ordenar_lista_segun_key,
-    exportar_ranking_csv
+    exportar_ranking_csv,
+    mostrar_cant_jugadores_por_posicion
 )
 
 menu = "{0}".format(
@@ -64,6 +65,9 @@ Nombre Jugador - Posición.
 
 23- BONUS TRACK!!! Generar un .csv de una tabla con la posición de ranking de Puntos, Rebotes, Asistencias y Robos de cada jugador.
 
+99- EJERCICIO EXTRA.
+    Determinar la cantidad de jugadores que hay por cada posición.
+
 0- SALIR
 
 Ingrese la opción deseada: """
@@ -98,8 +102,9 @@ while True:
             else:
                 pregunta = input("Quiere exportar las estadísticas del jugador en un .csv? (si/no)")
                 if re.match(r"si|no", pregunta, re.I):
-                    guardar_csv_jugador_stats(lista_dreamteam, int(indice), generar_path_jugador(
-                        lista_dreamteam, int(indice), path_stats_jugadores))
+                    if pregunta == "si":
+                        guardar_csv_jugador_stats(lista_dreamteam, int(indice), generar_path_jugador(
+                            lista_dreamteam, int(indice), path_stats_jugadores))
 
         case 4:
             nombre_jugador = input("Ingrese el nombre del jugador a buscar: ")
@@ -222,5 +227,8 @@ while True:
         case 0:
             print("Hasta pronto!")
             break
+        
+        case 99:
+            mostrar_cant_jugadores_por_posicion(lista_dreamteam)
 
     input("\n\nApriete una tecla para continuar...")

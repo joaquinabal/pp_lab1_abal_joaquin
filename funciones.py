@@ -57,7 +57,7 @@ def validacion_menu(numero: int):
     True: En caso que haya coincidido el re.match.
     False: En caso que no haya coincidido.
     '''
-    validacion = re.match(r'[1]?[0-9]{1}$|20|23', numero)
+    validacion = re.match(r'[1]?[0-9]{1}$|20|23|99', numero)
     if validacion:
         return True
     else:
@@ -528,23 +528,22 @@ def calcular_lista_ranking_jugadores_stats(lista_original: list[dict]):
     while contador <= len(lista_aux):
         for indice_aux in range(len(lista_aux)):
             lista_ranking_jugador = []
-            for indice_puntos in range(len(lista_aux)):
-                if lista_aux[indice_aux]["nombre"] == lista_puntos[indice_puntos]["nombre"]:
-                    lista_ranking_jugador.extend(
-                        [lista_aux[indice_aux]["nombre"], str(indice_puntos + 1)])
-            for indice_rebotes in range(len(lista_aux)):
-                if lista_aux[indice_aux]["nombre"] == lista_rebotes[indice_rebotes]["nombre"]:
-                    lista_ranking_jugador.extend([str(indice_rebotes + 1)])
-            for indice_asistencias in range(len(lista_aux)):
-                if lista_aux[indice_aux]["nombre"] == lista_asistencias[indice_asistencias]["nombre"]:
-                    lista_ranking_jugador.extend([str(indice_asistencias + 1)])
-            for indice_robos in range(len(lista_aux)):
-                if lista_aux[indice_aux]["nombre"] == lista_robos[indice_robos]["nombre"]:
-                    lista_ranking_jugador.extend([str(indice_robos + 1)])
+            extender_lista_ranking_jugador(lista_aux, lista_puntos, lista_ranking_jugador, indice_aux)
+            extender_lista_ranking_jugador(lista_aux, lista_rebotes, lista_ranking_jugador, indice_aux)
+            extender_lista_ranking_jugador(lista_aux, lista_asistencias, lista_ranking_jugador, indice_aux)
+            extender_lista_ranking_jugador(lista_aux, lista_robos, lista_ranking_jugador, indice_aux)
             contador += 1
             lista_ranking.append(lista_ranking_jugador)
     return lista_ranking
 
+def extender_lista_ranking_jugador(lista_jugadores: list[dict], lista_estadistica: list[dict], lista_ranking: list, indice_aux: int):
+    for indice in range(len(lista_jugadores)):
+        if lista_jugadores[indice_aux]["nombre"] == lista_estadistica[indice]["nombre"]:
+            if lista_ranking == []:
+                lista_ranking.append(lista_jugadores[indice_aux]["nombre"])
+            lista_ranking.extend([str(indice + 1)])
+    return lista_ranking
+            
 
 def exportar_ranking_csv(lista_original: list[dict], path: str):
     '''
@@ -569,3 +568,37 @@ def exportar_ranking_csv(lista_original: list[dict], path: str):
     with open(path, "w") as archivo:
         archivo.writelines([mensaje])
     print("el archivo fue creado en {0}".format(path))
+    
+def mostrar_cant_jugadores_por_posicion(lista_original: list):
+    '''
+    Esta función muestra en forma de listado la cantidad de jugadores que juegan cada posición.
+    ------------
+    Parámetros:
+    lista_original: tipo list[dict] -> la lista original que se importó del JSON.
+    ------------
+    Retorna:
+    False: en caso de que lista_original se encuentre vacía.
+    '''
+    if len(lista_original) == 0:
+        print("Lista vacía.")
+        return False
+    lista = lista_original[:]
+    lista_posiciones = [["Ala-Pivot",0],["Alero",0],["Base",0],["Escolta",0],["Pivot",0]]
+    for jugador in lista:
+        match(jugador["posicion"]):
+            case "Ala-Pivot":
+                lista_posiciones[0][1] += 1
+    
+            case "Alero":
+                lista_posiciones[1][1] += 1
+            
+            case "Base":
+                lista_posiciones[2][1] += 1
+            
+            case "Escolta":
+                lista_posiciones[3][1] += 1
+            
+            case "Pivot":
+                lista_posiciones[4][1] += 1
+    for posicion in lista_posiciones:
+        print("\n{0}: {1}".format(posicion[0], posicion[1]))
